@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <title>Electron Calendar</title>
+
+  <link rel="stylesheet" href="assets/styles/photon.css">
+  <link rel="stylesheet" href="assets/styles/style.css">
+
+  <script>var electronRequire = require;</script>
+  <script type="text/javascript" src="assets/scripts/settings.js"></script>
+</head>
+<body>
+
+<div class="window">
+
+  <!-- Start the header -->
+  <header class="toolbar toolbar-header">
+    <h1 class="title">Electron Calendar Settings</h1>
+  </header>
+  <!-- End the header -->
+
+  <!-- Start main content -->
+  <div class="window-content">
+
+  <div class="pane padded">
+
+      <div class="form-group">
+        <label>Date format</label>
+        <input id="input-date-format" type="text" class="form-control" placeholder="MMMM Do YYYY, h:mm:ss a" />
+      </div>
+
+      <div class="form-group">
+      <label id="output-date-format">Preview: <span>MMMM Do YYYY, h:mm:ss a</span></label>
+      </div>
+
+      <div class="checkbox">
+        <label>
+          <input id="check-always-on-top" type="checkbox" checked />
+          Keep calendar window always on top
+        </label>
+      </div>
+
+      <div class="checkbox">
+        <label>
+          <input id="check-launch-on-startup" type="checkbox" checked />
+          Launch Electron Calendar at startup
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>Keyboard Combo</label>
+        <input id="input-keyboard-combo" type="text" class="form-control" placeholder="&#8984;`" />
+      </div>
+
+
+  </div>
+
+  </div>
+  <!-- End main content -->
+
+  <!-- Start the footer -->
+  <footer class="toolbar toolbar-footer">
+    <div class="toolbar-actions text-center">
+
+      <button class="btn btn-default pull-right" id="btn-settings-okay">
+        Okay
+      </button>
+
+    </div>
+  </footer>
+  <!-- End the footer -->
+
+
+</div>
+
+</body>
+</html>

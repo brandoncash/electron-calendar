@@ -1,0 +1,34 @@
+{
+  "name": "example-calendar",
+  "version": "1.0.0",
+  "description": "A calendar menubar app powered by electron",
+  "dependencies": {
+    "menubar": "*",
+    "node-calendar": "~0.1.4",
+    "gulp-eta": "~0.4.7",
+    "gulp": "~3.9.0",
+    "sassqwatch": "~0.7.4",
+    "jquery": "~2.1.4",
+    "jquery-browserify": "~1.8.1",
+    "moment": "~2.10.6"
+  },
+  "devDependencies": {
+    "electron-packager": "^5.0.1",
+    "electron-prebuilt": "0.30.3",
+    "browserify-ejs": "0.0.2",
+    "gulp": "~3.9.0",
+    "browserify": "~11.2.0",
+    "browserify-shim": "~3.8.10"
+  },
+  "main": "main.js",
+  "scripts": {
+    "build": "electron-packager . Example --platform=darwin --arch=x64 --version=0.30.3 --ignore=node_modules/electron --icon=Icon.icns",
+    "start": "electron ."
+  },
+  "browser": {
+    "waitFor": "./src/scripts/lib/waitFor.js"
+  },
+  "browserify-shim": {
+    "jquery": "global:$"
+  }
+}
