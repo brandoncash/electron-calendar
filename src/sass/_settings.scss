@@ -1,0 +1,30 @@
+.window.settings {
+}
+
+.global-keyboard-shortcut {
+  &:after {
+    display: table;
+    content: '';
+    clear: both;
+  }
+}
+
+.global-keyboard-shortcut-modifiers-container {
+  display: flex;
+  float: left;
+  width: 35%;
+  height: 40px;
+  align-items: center;
+}
+
+.global-keyboard-shortcut-keys-container {
+  display: flex;
+  float: left;
+  width: 20%;
+  height: 40px;
+  align-items: center;
+
+  input {
+    text-transform: uppercase;
+  }
+}

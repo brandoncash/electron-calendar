@@ -2,42 +2,158 @@ var ipc = electronRequire('ipc')
 var $ = electronRequire('jquery-browserify')
 var moment = electronRequire('moment')
 
-var settings = {
-		dateFormat: 'MMMM Do YYYY, h:mm:ss a'
-	},
-	$inputDateFormat,
-	$outputDateFormat,
-	$btnSettingsOkay,
-	$checkAlwaysOnTop,
-	$checkLaunchOnStartup
+var updateTimer,
+  globalShortcutKeys = null,
+  $inputGlobalShortcutKeys,
+  $btnShortcutModifierAlt,
+  $btnShortcutModifierCommand,
+  $btnShortcutModifierControl,
+  $btnShortcutModifierShift,
+  $inputDateFormat,
+  $outputDateFormat,
+  $checkWindowTransparency,
+  $inputWindowTransparency,
+  $btnSettingsOkay,
+  $checkAlwaysOnTop,
+  $checkLaunchOnStartup
 
 $(document).ready(function () {
-	$inputDateFormat = $('#input-date-format')
-	$outputDateFormat = $('#output-date-format span')
-	$btnSettingsOkay = $('#btn-settings-okay')
-	$checkAlwaysOnTop = $('#check-always-on-top')
-	$checkLaunchOnStartup = $('#check-launch-on-startup')
+  $inputGlobalShortcutKeys = $('#input-global-shortcut-keys')
+  $btnShortcutModifierAlt = $('#btn-shortcut-modifier-alt')
+  $btnShortcutModifierCommand = $('#btn-shortcut-modifier-command')
+  $btnShortcutModifierControl = $('#btn-shortcut-modifier-control')
+  $btnShortcutModifierShift = $('#btn-shortcut-modifier-shift')
+  $inputDateFormat = $('#input-date-format')
+  $outputDateFormat = $('#output-date-format span')
+  $checkWindowTransparency = $('#check-window-transparency')
+  $inputWindowTransparency = $('#input-window-transparency')
+  $btnSettingsOkay = $('#btn-settings-okay')
+  $checkAlwaysOnTop = $('#check-always-on-top')
+  $checkLaunchOnStartup = $('#check-launch-on-startup')
 
-	$inputDateFormat.val(settings.dateFormat);
+  resetUpdateTimer()
+  updateTimePreview()
+  globalShortcutKeys = ipc.sendSync('uiMessage.main', 'getGlobalShortcutKeys')
+  updateShortcutInputs()
 
-	updateTimePreview()
-	setInterval(updateTimePreview, 1000)
+// dese are ugly++
+  $btnShortcutModifierAlt.click(function () {
+    $(this).toggleClass('active')
+    globalShortcutKeys.alt = $(this).hasClass('active')
+    updateGlobalShortcutKeys()
+  })
 
-	$inputDateFormat.on('keyup', function(thing) {
-		settings.dateFormat = $inputDateFormat.val()
-		updateTimePreview()
-	})
+  $btnShortcutModifierCommand.click(function () {
+    $(this).toggleClass('active')
+    globalShortcutKeys.command = $(this).hasClass('active')
+    updateGlobalShortcutKeys()
+  })
 
-	// Clicking the settings button
-	$btnSettingsOkay.click(function () {
-		console.log('settings - clicked okay')
-		var reply = ipc.sendSync('uiMessage', 'clickedSettingsOkayBtn')
-	})
+  $btnShortcutModifierControl.click(function () {
+    $(this).toggleClass('active')
+    globalShortcutKeys.control = $(this).hasClass('active')
+    updateGlobalShortcutKeys()
+  })
+
+  $btnShortcutModifierShift.click(function () {
+    $(this).toggleClass('active')
+    globalShortcutKeys.shift = $(this).hasClass('active')
+    updateGlobalShortcutKeys()
+  })
+// end ugly++
+
+  $inputDateFormat.val(ipc.sendSync('uiMessage.main', 'getDateFormat'));
+
+  $inputDateFormat.on('keyup', keyUpInputDateFormat)
+  $inputGlobalShortcutKeys.keypress(keypressInputGlobalShortcutKeys)
+  $inputWindowTransparency.on('input', setWindowTransparencyAmount)
+  $checkWindowTransparency.on('change', checkWindowTransparency)
+  $checkAlwaysOnTop.on('change', toggleAlwaysOnTop)
+  $btnSettingsOkay.click(clickSettingsOkayBtn)
 })
 
 return
 
-function updateTimePreview() {
-	var dateString = moment().format(settings.dateFormat)
-	$outputDateFormat.text(dateString)
+function resetUpdateTimer () {
+  updateTimer = setInterval(updateTimePreview, 1000)
+}
+
+function keyUpInputDateFormat () {
+  ipc.sendSync('uiMessage.main', 'setDateFormat', $(this).val())
+  resetUpdateTimer()
+  updateTimePreview()
+}
+
+function updateGlobalShortcutKeys () {
+  ipc.sendSync('uiMessage.main', 'setGlobalShortcutKeys', globalShortcutKeys)
+}
+
+function updateShortcutInputs () {
+  $inputGlobalShortcutKeys.val(globalShortcutKeys.key);
+  if (globalShortcutKeys.alt) {
+    $btnShortcutModifierAlt.addClass('active')
+  } else {
+    $btnShortcutModifierAlt.removeClass('active')
+  }
+  if (globalShortcutKeys.command) {
+    $btnShortcutModifierCommand.addClass('active')
+  } else {
+    $btnShortcutModifierCommand.aremoveClass('active')
+  }
+  if (globalShortcutKeys.control) {
+    $btnShortcutModifierControl.addClass('active')
+  } else {
+    $btnShortcutModifierControl.removeClass('active')
+  }
+  if (globalShortcutKeys.shift) {
+    $btnShortcutModifierShift.addClass('active')
+  } else {
+    $btnShortcutModifierShift.removeClass('active')
+  }
+}
+
+function keypressInputGlobalShortcutKeys (event) {
+  var character = String.fromCharCode(event.which),
+    validKeys = /^\w+$/
+
+  if (!validKeys.test(character))
+    return
+
+  globalShortcutKeys.key = character
+  $(this).val(character)
+  updateGlobalShortcutKeys()
+  updateTimePreview()
+  event.preventDefault()
+  return false
+}
+
+function checkWindowTransparency () {
+  var isChecked = $(this).prop('checked')
+
+  if (isChecked) {
+    $inputWindowTransparency.removeAttr('disabled')
+  } else {
+    $inputWindowTransparency.attr('disabled', 'disabled')
+  }
+
+  ipc.sendSync('uiMessage.main', 'settings.toggleWindowTransparency', isChecked)
+}
+
+function setWindowTransparencyAmount () {
+  ipc.sendSync('uiMessage.main', 'settings.setWindowTransparencyAmount', $(this).val())
+}
+
+function toggleAlwaysOnTop () {
+  var isChecked = $(this).prop('checked')
+
+  ipc.sendSync('uiMessage.main', 'settings.toggleAlwaysOnTop', isChecked)
+}
+
+function clickSettingsOkayBtn () {
+  var reply = ipc.sendSync('uiMessage.main', 'settings.clickedSettingsOkayBtn')
+}
+
+function updateTimePreview () {
+  var dateString = ipc.sendSync('uiMessage.main', 'getDateString')
+  $outputDateFormat.text(dateString)
 }

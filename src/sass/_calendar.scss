@@ -1,9 +1,15 @@
-.toolbar-header {
-  .title {
-    margin-top: rem(5px);
-    font-size: rem(14px);
+.window.calendar {
+  &:not(.has-transparency) {
+    opacity: 1 !important;
   }
 }
+
+// .toolbar-header {
+//   .title {
+//     margin-top: rem(5px);
+//     font-size: rem(14px);
+//   }
+// }
 
 #calendar-view {
 	display: flex;

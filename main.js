@@ -1,11 +1,23 @@
 var app = require('app')
 var ipc = require('ipc')
+var globalShortcut = require('global-shortcut')
 var BrowserWindow = require('browser-window');
 var menubar = require('menubar')
 var moment = require('moment')
 
 var options = {
-    viewDirectory: 'file://' + app.getAppPath() + '/view'
+    viewDirectory: 'file://' + app.getAppPath() + '/view',
+    globalShortcutKeys: {
+      alt: false,
+      command: true,
+      control: false,
+      shift: true,
+      key: '1'
+    },
+    dateFormat: 'MMMM Do YYYY, h:mm:ss a',
+    alwaysOnTop: true,
+    transparentWindow: false,
+    transparencyAmount: 100
   },
   settingsWindowConfig = {
       width: 400,
@@ -15,9 +27,9 @@ var options = {
       frame: false,
       'always-on-top': true
     },
-  settingsWindow = null
-
-var mb_options = {
+  settingsWindow = null,
+  updateTimer = null,
+  mb_options = {
     'icon': 'icon-default.png',
     'always-on-top': true,
     'preloadWindow': true,
@@ -25,7 +37,8 @@ var mb_options = {
     'height': 240,
     'min-width': 300,
     'min-height': 240,
-    'index': options.viewDirectory + '/calendar.html'
+    'index': options.viewDirectory + '/calendar.html',
+    'transparent': false // TODO: find a way to swap this in runtime. recreate the window?
   },
   mb = menubar(mb_options)
 
@@ -35,51 +48,149 @@ mb.on('ready', function ready () {
   mb.tray.setHighlightMode(true)
   updateMenubarText()
 
-  // Every second, update the title with the new time
-  setInterval(updateMenubarText, 1000)
+  resetUpdateTimer()
 
-  // clickSettingsBtn()
+  resetGlobalShortcutKeys()
 
-  ipc.on('uiMessage', function(event, message) {
-    var response = false
+  ipc.on('uiMessage.main', uiListener)
 
-    switch (message) {
-      case 'clickedSettingsBtn':
-        response = clickSettingsBtn()
-        break
-      case 'clickedSettingsOkayBtn':
-        response = clickSettingsOkayBtn()
-        break
-    }
-
-    event.returnValue = response
+  settingsWindow = new BrowserWindow(settingsWindowConfig)
+  settingsWindow.loadUrl(options.viewDirectory + '/settings.html')
+  settingsWindow.on('close', function () {
+      console.log('closed settings window')
   })
 
   return
 
-  function clickSettingsBtn() {
-    if (settingsWindow === null) {
-      console.log('opening settingsWindow')
-      settingsWindow = new BrowserWindow(settingsWindowConfig)
-      settingsWindow.loadUrl(options.viewDirectory + '/settings.html')
-      settingsWindow.show()
+  function uiListener (event, message, arg1) {
+    // console.log('main.js received ', event)
+    var response = false
 
-      settingsWindow.on('close', function () {
-        console.log('close settingsWindow')
-        settingsWindow = null
-      })
+    switch (message) {
+      case 'getDateFormat':
+        response = options.dateFormat
+        break
+      case 'setDateFormat':
+        response = setDateFormat(arg1)
+        break
+      case 'getGlobalShortcutKeys':
+        response = options.globalShortcutKeys
+        break
+      case 'setGlobalShortcutKeys':
+        response = setGlobalShortcutKeys(arg1)
+        break
+      case 'getDateString':
+        response = getDateString()
+        break
+      case 'calendar.clickedSettingsBtn':
+        response = clickSettingsBtn()
+        break
+      case 'settings.clickedSettingsOkayBtn':
+        response = clickSettingsOkayBtn()
+        break
+      case 'settings.setWindowTransparencyAmount':
+        response = setWindowTransparencyAmount(arg1)
+        break
+      case 'settings.toggleWindowTransparency':
+        response = toggleWindowTransparency(arg1)
+        break
+      case 'settings.toggleAlwaysOnTop':
+        response = toggleAlwaysOnTop(arg1)
+        break
+    }
+
+    event.returnValue = response
+  }
+
+  function resetUpdateTimer () {
+    // Every second, update the title with the new time
+    updateTimer = setInterval(updateMenubarText, 1000)
+  }
+
+  function resetGlobalShortcutKeys () {
+    globalShortcut.unregisterAll()
+    globalShortcut.register(getGlobalShortcutKeysString(), pressedGlobalShortcutKeys)
+  }
+
+  function setGlobalShortcutKeys(new_keys) {
+    options.globalShortcutKeys = new_keys;
+    resetGlobalShortcutKeys()
+
+    return true
+  }
+
+  function getGlobalShortcutKeys() {
+    return options.globalShortcutKeys
+  }
+
+  function getGlobalShortcutKeysString() {
+    var keys_string = '';
+
+    if (options.globalShortcutKeys.alt)
+      keys_string += 'Alt+'
+    if (options.globalShortcutKeys.command)
+      keys_string += 'Command+'
+    if (options.globalShortcutKeys.control)
+      keys_string += 'Control+'
+    if (options.globalShortcutKeys.shift)
+      keys_string += 'Shift+'
+    keys_string += options.globalShortcutKeys.key
+
+    return keys_string
+  }
+
+  function pressedGlobalShortcutKeys() {
+    if (!mb.window.isVisible()) {
+      mb.window.show()
     } else {
-      console.log('already open')
+      mb.hideWindow()
+    }
+  }
+
+  function clickSettingsBtn() {
+    if (!settingsWindow.isVisible()) {
+      settingsWindow.show()
+    } else {
       settingsWindow.hide()
-      settingsWindow = null
     }
 
     return true
   }
 
+  function setDateFormat(new_format) {
+    options.dateFormat = new_format;
+    resetUpdateTimer()
+
+    return true
+  }
+
+  // Toggle whether the calendar window is always on top
+  function toggleAlwaysOnTop(isChecked) {
+    options.alwaysOnTop = isChecked
+    mb.window.setAlwaysOnTop(isChecked)
+
+    return true
+  }
+
+  // Toggle window transparency
+  function toggleWindowTransparency(isChecked) {
+    options.transparentWindow = isChecked
+    mb.window.webContents.send('calendar.toggleWindowTransparency', isChecked)
+
+    return true
+  }
+
+  // Sets how much transparency the window will have
+  function setWindowTransparencyAmount(percentage) {
+    options.transparencyAmount = percentage
+    mb.window.webContents.send('calendar.setWindowTransparencyAmount', percentage)
+
+    return true
+  }
+
+  // Clicking the okay button in the settings panel
   function clickSettingsOkayBtn() {
-    console.log('Here I would be saving the settings')
-    settingsWindow.close()
+    settingsWindow.hide()
 
     return true
   }
@@ -90,7 +201,7 @@ mb.on('ready', function ready () {
   }
 
   function getDateString () {
-    var dateString = moment().format('MMMM Do YYYY, h:mm:ss a')
+    var dateString = moment().format(options.dateFormat)
 
     return dateString
   }

@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div class="window">
+<div class="window settings">
 
   <!-- Start the header -->
   <header class="toolbar toolbar-header">
@@ -48,8 +48,41 @@
       </div>
 
       <div class="form-group">
-        <label>Keyboard Combo</label>
-        <input id="input-keyboard-combo" type="text" class="form-control" placeholder="&#8984;`" />
+        <label>Global Keyboard Shortcut</label>
+
+        <div class="global-keyboard-shortcut">
+          <div class="global-keyboard-shortcut-modifiers-container">
+            <!-- Button group for modifier keys -->
+            <div class="btn-group">
+              <button class="btn btn-default" id="btn-shortcut-modifier-alt">
+                &#x2387;
+              </button>
+              <button class="btn btn-default" id="btn-shortcut-modifier-command">
+                &#x2318;
+              </button>
+              <button class="btn btn-default" id="btn-shortcut-modifier-control">
+                &#8963;
+              </button>
+              <button class="btn btn-default" id="btn-shortcut-modifier-shift">
+                &#8679;
+              </button>
+            </div>
+            <!-- End button group for modifier keys -->
+          </div>
+
+          <div class="global-keyboard-shortcut-keys-container">
+            <input id="input-global-shortcut-keys" type="text" class="form-control" placeholder="1" />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input id="check-window-transparency" type="checkbox" />
+          Window transparency
+        </label>
+        <input disabled id="input-window-transparency" type="range" min="10" max="100" step="1" value="100" class="form-control" />
       </div>
 
 
