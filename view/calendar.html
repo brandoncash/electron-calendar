@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="assets/styles/photon.css">
   <link rel="stylesheet" href="assets/styles/style.css">
 
-  <script>var electronRequire = require;</script>
+  <script>var electronRequire = require</script>
   <script type="text/javascript" src="assets/scripts/calendar.js"></script>
 </head>
 <body>
@@ -14,31 +14,32 @@
 <div class="window calendar">
 
   <!-- Start the header -->
-  <header class="toolbar toolbar-header">
-    <h1 class="title">Sunday, October 18, 2015</h1>
-
-    <div class="toolbar-actions">
-
-      <!-- Button group for view -->
-      <div class="btn-group">
-        <button class="btn btn-default" id="btn-navigate-prev-month">
-          <span class="icon icon-left-open"></span>
-        </button>
-        <button class="btn btn-default" id="btn-navigate-current-month">
-          <span class="icon icon-target"></span>
-        </button>
-        <button class="btn btn-default" id="btn-navigate-next-month">
-          <span class="icon icon-right-open"></span>
-        </button>
-      </div>
-      <!-- End button group for view type -->
-
-      <button class="btn btn-default pull-right" id="btn-settings">
-        <span class="icon icon-cog"></span>
-      </button>
+  <header>
+    <div id="btn-close" class="btn-close">
+      <span class="icon icon-cancel"></span>
+    </div>
+    <div id="btn-open-settings" class="btn-open-settings">
+      <span class="icon icon-cog"></span>
     </div>
   </header>
   <!-- End the header -->
+
+  <section class="month-navigation">
+    <div id="month-label" class="current-month">Month</div>
+    <div id="year-label" class="current-year">Year</div>
+
+    <div class="buttons">
+      <div id="btn-navigate-prev-month" class="icon-container">
+        <span class="icon icon-left-open"></span>
+      </div>
+      <div id="btn-navigate-current-month" class="icon-container">
+        <span class="icon icon-dot"></span>
+      </div>
+      <div id="btn-navigate-next-month" class="icon-container">
+        <span class="icon icon-right-open"></span>
+      </div>
+    </div>
+  </section>
 
   <!-- Start main content -->
   <div class="window-content">
@@ -47,16 +48,6 @@
 
   </div>
   <!-- End main content -->
-
-  <!-- Start the footer -->
-  <footer class="toolbar toolbar-footer">
-    <div class="toolbar-actions text-center">
-
-      <span id="month-label"></span>
-
-    </div>
-  </footer>
-  <!-- End the footer -->
 
 </div>
 

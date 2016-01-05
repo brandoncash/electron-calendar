@@ -1,20 +1,103 @@
 .window.calendar {
+  -webkit-app-region: drag;
+  background-color: #4f5261;
+  background-image: linear-gradient(171deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.2));
+  color: #fff;
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
+
   &:not(.has-transparency) {
     opacity: 1 !important;
   }
-}
+  &.has-transparency {
+    box-shadow: inset 0px 0px 3px solid rgba(0, 0, 0, 0.2);
+  }
 
-// .toolbar-header {
-//   .title {
-//     margin-top: rem(5px);
-//     font-size: rem(14px);
-//   }
-// }
+  .icon,
+  .icon-container {
+    -webkit-app-region: no-drag;
+
+    &:hover {
+      color: #ddd;
+    }
+    &:active {
+      color: #828287;
+      transform: translateY(1px);
+    }
+  }
+
+  header {
+    padding: 5px 8px 0 8px;
+
+    .btn-close {
+      -webkit-app-region: no-drag;
+      float: left;
+      width: 12px;
+      height: 12px;
+      border-radius: 100%;
+      background-color: #828287;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      text-shadow: none;
+
+      &:hover {
+        background-color: #E66C6C;
+      }
+
+      &:active {
+        background-color: #6d6d75;
+      }
+
+      .icon {
+        position: relative;
+        top: -4px;
+        opacity: 0;
+        color: #444;
+      }
+
+      &:hover .icon {
+        opacity: 1;
+      }
+    }
+
+    .btn-open-settings {
+      position: relative;
+      top: -4px;
+      float: right;
+    }
+  }
+
+  .month-navigation {
+    padding: 0 6px 0 14px;
+
+    .current-month,
+    .current-year {
+      display: inline-block;
+      font-size: 18px;
+    }
+
+    .current-month {
+      font-weight: bold;
+    }
+
+    .buttons {
+      display: flex;
+      float: right;
+      height: 28px;
+    }
+
+    .icon-container {
+      line-height: 28px;
+      padding: 2px 6px;
+    }
+  }
+}
 
 #calendar-view {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
+  padding: 0 6px 6px 6px;
+  font-size: 11px;
 
   .calendar-week,
   .calendar-weekdays {
@@ -24,12 +107,13 @@
   }
 
   .calendar-weekdays {
-    background-color: #f5f5f4;
+    margin-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    background-color: rgba(200, 200, 200, 0);
+    color: #828287;
 
     > div {
-        padding: rem(4px 0);
-        border-right: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
+        padding: 4px 0;
         text-align: center;
     }
   }
@@ -39,15 +123,22 @@
 
     // All the days in the week
     > div {
-      background-color: #fcfcfc;
-    	border-right: 1px solid #e9e9e9;
-      border-bottom: 1px solid #e9e9e9;
+      background-color: rgba(255, 255, 255, 0);
     }
 
     // From the previous or next month
     > div.outside-month {
-      background-color: #fff;
-      color: #ddd;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #bbb;
+
+      &.first {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+      &.last {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
     }
   }
 
@@ -62,11 +153,28 @@
   }
 
   .today {
-    border-color: #388df8;
-    border-bottom-color: #0866dc;
-    background-color: #6eb4f7;
+    position: relative;
     color: #fff;
-    background-image: linear-gradient(to bottom, #6eb4f7 0%, #1a82fb 100%);
+
+    &:before {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      content: '';
+      z-index: 0;
+      width: 24px;
+      height: 24px;
+      border-color: #388df8;
+      border-bottom-color: #0866dc;
+      border-radius: 100%;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+      background-image: linear-gradient(to bottom, #6eb4f7 0%, #1a82fb 100%);
+    }
+
+    span {
+      z-index: 1;
+    }
   }
 
 }

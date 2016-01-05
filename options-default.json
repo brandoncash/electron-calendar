@@ -1,0 +1,26 @@
+{
+  "menubar": {
+    "showDate": true,
+    "dateFormat": "ddd h:mm:ss a",
+    "iconType": "fatcalendar-date"
+  },
+  "globalShortcutKeys": {
+    "alt": false,
+    "command": true,
+    "control": false,
+    "key": "1",
+    "shift": true
+  },
+  "window": {
+    "width": 259,
+    "height": 222,
+    "x": 1225,
+    "y": 61,
+    "rememberSize": false,
+    "rememberPosition": false,
+    "alwaysOnTop": true,
+    "backgroundColor": "4f5261",
+    "transparencyActive": true,
+    "transparencyAmount": 80
+  }
+}

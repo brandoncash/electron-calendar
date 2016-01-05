@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="assets/styles/photon.css">
   <link rel="stylesheet" href="assets/styles/style.css">
 
-  <script>var electronRequire = require;</script>
+  <script>var electronRequire = require</script>
   <script type="text/javascript" src="assets/scripts/settings.js"></script>
 </head>
 <body>
@@ -16,77 +16,264 @@
   <!-- Start the header -->
   <header class="toolbar toolbar-header">
     <h1 class="title">Electron Calendar Settings</h1>
+
+    <div class="toolbar-actions">
+
+      <button class="btn btn-default section-button" data-section="menubar">
+        <span class="icon icon-left-open"></span>
+        <br />
+        Menubar
+      </button>
+
+      <button class="btn btn-default section-button" data-section="calendar">
+        <span class="icon icon-target"></span>
+        <br />
+        Calendar
+      </button>
+
+      <button class="btn btn-default pull-right section-button" data-section="about">
+        <span class="icon icon-cog"></span>
+        <br />
+        About
+      </button>
+    </div>
   </header>
   <!-- End the header -->
 
   <!-- Start main content -->
   <div class="window-content">
 
-  <div class="pane padded">
-
+    <!-- Begin menubar settings -->
+    <section class="pane form-page active" data-section="menubar">
       <div class="form-group">
-        <label>Date format</label>
-        <input id="input-date-format" type="text" class="form-control" placeholder="MMMM Do YYYY, h:mm:ss a" />
-      </div>
 
-      <div class="form-group">
-      <label id="output-date-format">Preview: <span>MMMM Do YYYY, h:mm:ss a</span></label>
-      </div>
-
-      <div class="checkbox">
-        <label>
-          <input id="check-always-on-top" type="checkbox" checked />
-          Keep calendar window always on top
-        </label>
-      </div>
-
-      <div class="checkbox">
-        <label>
-          <input id="check-launch-on-startup" type="checkbox" checked />
-          Launch Electron Calendar at startup
-        </label>
-      </div>
-
-      <div class="form-group">
-        <label>Global Keyboard Shortcut</label>
-
-        <div class="global-keyboard-shortcut">
-          <div class="global-keyboard-shortcut-modifiers-container">
-            <!-- Button group for modifier keys -->
+        <div class="form-row">
+          <div class="left">
+            <label>Icon style:</label>
+          </div>
+          <div class="right icon-style">
             <div class="btn-group">
-              <button class="btn btn-default" id="btn-shortcut-modifier-alt">
-                &#x2387;
+              <button class="btn btn-default btn-icon-style active" data-icon-type="calendar-date" data-icon-description="A calendar with the day of the month">
+                <img src="../icons/calendar-date-31.png" class="icon-inactive" alt="A calendar with the day of the month" />
+                <img src="../icons/calendar-date-31-white.png" class="icon-active" alt="A calendar with the day of the month" />
               </button>
-              <button class="btn btn-default" id="btn-shortcut-modifier-command">
-                &#x2318;
+
+              <button class="btn btn-default btn-icon-style" data-icon-type="filledcalendar-date" data-icon-description="A filled calendar with the day of the month">
+                <img src="../icons/filledcalendar-date-31.png" class="icon-inactive" alt="A filled calendar with the day of the month" />
+                <img src="../icons/filledcalendar-date-31-white.png" class="icon-active" alt="A filled calendar with the day of the month" />
               </button>
-              <button class="btn btn-default" id="btn-shortcut-modifier-control">
-                &#8963;
-              </button>
-              <button class="btn btn-default" id="btn-shortcut-modifier-shift">
-                &#8679;
+
+              <button class="btn btn-default btn-icon-style" data-icon-type="fatcalendar-date" data-icon-description="A bold calendar with the day of the month">
+                <img src="../icons/fatcalendar-date-31.png" class="icon-inactive" alt="A bold calendar with the day of the month" />
+                <img src="../icons/fatcalendar-date-31-white.png" class="icon-active" alt="A bold calendar with the day of the month" />
               </button>
             </div>
-            <!-- End button group for modifier keys -->
-          </div>
 
-          <div class="global-keyboard-shortcut-keys-container">
-            <input id="input-global-shortcut-keys" type="text" class="form-control" placeholder="1" />
+            <div class="btn-group">
+              <button class="btn btn-default btn-icon-style" data-icon-type="calendar-weekday" data-icon-description="A calendar with the day of the week">
+                <img src="../icons/calendar-weekday-wednesday.png" class="icon-inactive" alt="A calendar with the day of the week" />
+                <img src="../icons/calendar-weekday-wednesday-white.png" class="icon-active" alt="A calendar with the day of the week" />
+              </button>
+
+              <button class="btn btn-default btn-icon-style" data-icon-type="filledcalendar-weekday" data-icon-description="A filled calendar with the day of the week">
+                <img src="../icons/filledcalendar-weekday-wednesday.png" class="icon-inactive" alt="A filled calendar with the day of the week" />
+                <img src="../icons/filledcalendar-weekday-wednesday-white.png" class="icon-active" alt="A filled calendar with the day of the week" />
+              </button>
+
+              <button class="btn btn-default btn-icon-style" data-icon-type="fatcalendar-weekday" data-icon-description="A bold calendar with the day of the week">
+                <img src="../icons/fatcalendar-weekday-wednesday.png" class="icon-inactive" alt="A bold calendar with the day of the week" />
+                <img src="../icons/fatcalendar-weekday-wednesday-white.png" class="icon-active" alt="A bold calendar with the day of the week" />
+              </button>
+            </div>
+
+            <p>Icon description</p>
           </div>
         </div>
 
-      </div>
+        <div class="form-row checkbox">
+          <div class="right">
+            <label>
+              <input id="check-show-date" type="checkbox" />
+              Show the date
+            </label>
+          </div>
+        </div>
 
+        <div class="form-row">
+          <div class="left">
+            <label>Date format:</label>
+          </div>
+          <div class="right">
+            <div class="select-container">
+              <select id="select-date-format">
+                <option value="MM/D">10/27</option>
+                <option value="MM/D/YY">10/27/15</option>
+                <option value="MM/D/YYYY">10/27/2015</option>
+                <option value="ddd, MMM D">Tue, Oct 27</option>
+                <option value="ddd, MMMM D">Tue, October 27</option>
+                <option value="dddd, MMMM D">Tuesday, October 27</option>
+                <option value="dddd, MMMM D, H:mm">Tuesday, October 27, 15:49</option>
+                <option value="dddd, MMMM D, h:mm">Tuesday, October 27, 3:49</option>
+                <option value="dddd, MMMM D, h:mm a">Tuesday, October 27, 3:49 pm</option>
+                <option value="dddd, MMMM D, h:mm:ss a">Tuesday, October 27, 3:49:15 pm</option>
+                <option value="MMMM D">October 27</option>
+                <option value="MMMM D, YYYY">October 27, 2015</option>
+                <option value="MMMM Do">October 27th</option>
+                <option value="MMMM Do YYYY">October 27th 2015</option>
+                <option value="MMMM D, H:mm">October 27, 15:49</option>
+                <option value="MMMM D, h:mm">October 27, 3:49</option>
+                <option value="MMMM D, h:mm a">October 27, 3:49 pm</option>
+                <option value="MMMM D, h:mm:ss a">October 27, 3:49:15 pm</option>
+                <option value="h:mm">3:49</option>
+                <option value="h:mm a">3:49 pm</option>
+                <option value="h:mm:ss a">3:49:15 pm</option>
+                <option value="ddd h:mm a">Tue 3:49 pm</option>
+                <option value="ddd h:mm:ss a">Tue 3:49:15 pm</option>
+                <option value="" class="custom">Custom</option>
+              </select>
+            </div>
+            <input id="input-date-format" type="text" class="form-control" placeholder="MMMM Do YYYY, h:mm:ss a" />
+            <p>
+              See the <a href="http://momentjs.com/docs/#/displaying/">moment.js documentation</a> for a full list of options.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End menubar settings -->
+
+    <!-- Begin calendar settings -->
+    <section class="pane form-page" data-section="calendar">
       <div class="form-group">
-        <label>
-          <input id="check-window-transparency" type="checkbox" />
-          Window transparency
-        </label>
-        <input disabled id="input-window-transparency" type="range" min="10" max="100" step="1" value="100" class="form-control" />
+        <div class="form-row">
+          <div class="left">
+            <label class="subtitle">Hot Key:</label>
+          </div>
+          <div class="right">
+            <div class="global-keyboard-shortcut">
+              <div class="global-keyboard-shortcut-modifiers-container">
+                <!-- Button group for modifier keys -->
+                <div class="btn-group">
+                  <button class="btn btn-default" id="btn-shortcut-modifier-alt">
+                    &#x2387;
+                  </button>
+                  <button class="btn btn-default" id="btn-shortcut-modifier-command">
+                    &#x2318;
+                  </button>
+                  <button class="btn btn-default" id="btn-shortcut-modifier-control">
+                    &#8963;
+                  </button>
+                  <button class="btn btn-default" id="btn-shortcut-modifier-shift">
+                    &#8679;
+                  </button>
+                </div>
+                <!-- End button group for modifier keys -->
+              </div>
+
+              <div class="global-keyboard-shortcut-keys-container">
+                <input id="input-global-shortcut-keys" type="text" class="form-control" placeholder="1" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="left">
+            <label>Window size:</label>
+          </div>
+          <div class="right">
+            <input id="input-window-width" type="text" class="form-control window-size" placeholder="Width" />
+            &nbsp;by&nbsp;
+            <input id="input-window-height" type="text" class="form-control window-size" placeholder="Height" />
+            px
+          </div>
+        </div>
+
+        <div class="form-row checkbox">
+          <div class="right">
+            <label>
+              <input id="check-remember-size" type="checkbox" />
+              Remember window size
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row checkbox">
+          <div class="right">
+            <label>
+              <input id="check-remember-position" type="checkbox" />
+              Remember window position
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row checkbox">
+          <div class="right">
+            <label>
+              <input id="check-always-on-top" type="checkbox" />
+              Keep calendar window always on top
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row checkbox">
+          <div class="left">
+            <label>Background:</label>
+          </div>
+          <div class="right">
+            <div class="form-group window-background">
+              <div class="color">
+                <input id="input-background-color" type="color" value="#4f5261" class="form-control" />
+              </div>
+              <div class="transparency">
+                <label>
+                  <input id="check-window-transparency" type="checkbox" />
+                  Transparency
+                </label>
+
+                <input id="input-window-transparency" type="range" min="10" max="100" step="1" value="100" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
+    <!-- End calendar settings -->
 
+    <!-- Begin about page -->
+    <section class="pane form-page" data-section="about">
+      <div class="form-group">
+        <div class="form-row app-title">
+          <div class="left">
+            <img src="../icons/app-icon.png" alt="Electron Calendar" />
+          </div>
+          <div class="right">
+            <h1>Electron Calendar</h1>
+            <div>
+              Version 1.0.0
+              &nbsp;&middot;&nbsp;
+              agreeable alpaca
+            </div>
+          </div>
+        </div>
 
-  </div>
+        <div class="form-row">
+          <div class="right">
+            Get support <a href="http://www.github.com/brandoncash/electron-calendar/">on GitHub</a>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="left">
+            Icons by:
+          </div>
+          <div class="right">
+            <a href="https://icons8.com/">Icons8</a> under a <a href="https://creativecommons.org/licenses/by-nd/3.0/">Creative Commons Attribution-NoDerivs 3.0 Unported</a> license.
+          </div>
+        </div>
+      </div>
+      <!-- End about page -->
+    </section>
 
   </div>
   <!-- End main content -->
@@ -95,6 +282,10 @@
   <footer class="toolbar toolbar-footer">
     <div class="toolbar-actions text-center">
 
+      <button class="btn btn-default pull-left" id="btn-settings-reset">
+        Reset
+      </button>
+
       <button class="btn btn-default pull-right" id="btn-settings-okay">
         Okay
       </button>
@@ -102,7 +293,6 @@
     </div>
   </footer>
   <!-- End the footer -->
-
 
 </div>
 

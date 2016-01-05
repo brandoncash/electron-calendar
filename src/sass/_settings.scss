@@ -1,4 +1,64 @@
 .window.settings {
+  height: 422px;
+  background-color: #f5f5f4;
+
+  .form-page {
+    padding: 20px 40px;
+    border-left: none;
+
+    .btn {
+      height: 30px;
+    }
+  }
+
+  .form-row {
+    margin-bottom: 10px;
+
+    &:after {
+      display: table;
+      content: '';
+      clear: both;
+    }
+
+    .left {
+      float: left;
+      width: 25%;
+      text-align: right;
+      padding-right: 10px;
+    }
+
+    .right {
+      float: right;
+      width: 75%;
+    }
+
+    .left label {
+      height: 30px;
+      line-height: 30px;
+    }
+  }
+
+  .form-page {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+}
+
+.btn-icon-style {
+  .icon-active {
+    display: none;
+  }
+  &.active {
+    .icon-active {
+      display: block;
+    }
+    .icon-inactive {
+      display: none;
+    }
+  }
 }
 
 .global-keyboard-shortcut {
@@ -7,24 +67,172 @@
     content: '';
     clear: both;
   }
+
+  .global-keyboard-shortcut-modifiers-container,
+  .global-keyboard-shortcut-keys-container {
+    display: flex;
+    float: left;
+    width: 120px;
+    align-items: center;
+  }
+
+  .global-keyboard-shortcut-keys-container {
+    width: 70px;
+
+    input {
+      text-transform: uppercase;
+    }
+  }
 }
 
-.global-keyboard-shortcut-modifiers-container {
-  display: flex;
-  float: left;
-  width: 35%;
-  height: 40px;
-  align-items: center;
+.window-size {
+  display: inline-block;
+  width: 80px;
 }
 
-.global-keyboard-shortcut-keys-container {
-  display: flex;
-  float: left;
-  width: 20%;
-  height: 40px;
-  align-items: center;
+a {
+  color: #37afda;
+  cursor: pointer;
 
-  input {
-    text-transform: uppercase;
+  &:active {
+    color: #337c97;
+  }
+}
+
+.window-background {
+  .color {
+    float: left;
+    width: 70px;
+  }
+
+  .transparency {
+    float: left;
+    width: calc(100% - 70px);
+
+    label {
+      margin-left: 10px;
+    }
+  }
+}
+
+
+// The about page
+//////////////////////
+
+.form-page[data-section="about"] {
+  background-color: #5989a9;
+  background-image: linear-gradient(171deg, #5989a9 40%, #133f5f);
+  color: #fff;
+  box-shadow: inset 0px -20px 40px rgba(0, 0, 0, 0.25),
+    inset 0px 0px 10px rgba(0, 0, 0, 0.25);
+
+  h1 {
+    margin-bottom: 0;
+  }
+
+  a {
+    color: #a5d4d1;
+  }
+
+  .app-title {
+    margin-bottom: 20px;
+
+    .right {
+      padding-left: 20px;
+    }
+  }
+
+}
+
+//  Inputs and stuff
+/////////////////////
+
+input.has-error {
+  box-shadow: 3px 3px 0 #fc605b, -3px -3px 0 #fc605b, -3px 3px 0 #fc605b, 3px -3px 0 #fc605b !important;
+}
+
+input[type="text"] {
+  cursor: text;
+}
+
+input[type="color"] {
+  width: 60px;
+  height: 60px;
+  padding: 0 2px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 24px;
+  background-color: transparent;
+  border: none;
+
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    background: #ddd;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+  }
+
+  &:focus::-webkit-slider-runnable-track {
+    background: #fff;
+  }
+
+  &:disabled::-webkit-slider-runnable-track {
+    background: #888;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    position: relative;
+    height: 20px;
+    width: 20px;
+    top: -8px;
+    border: 1px solid transparent;
+    border-radius: 100%;
+    border-top-color: #c2c0c2;
+    border-right-color: #c2c0c2;
+    border-bottom-color: #a19fa1;
+    border-left-color: #c2c0c2;
+    background-color: #fcfcfc;
+    background-image: linear-gradient(to bottom, #fcfcfc 0%, #f1f1f1 100%);
+  }
+
+  &:disabled::-webkit-slider-thumb {
+    background-color: #aaa;
+    background-image: linear-gradient(to bottom, #bbb 0%, #a8a8a8 100%);
+  }
+}
+
+select {
+  -webkit-appearance: none;
+  width: 100%;
+  padding: 4px 10px;
+  margin: 0 0 8px 0;
+  color: #333;
+  border-top-color: #c2c0c2;
+  border-right-color: #c2c0c2;
+  border-bottom-color: #a19fa1;
+  border-left-color: #c2c0c2;
+  background-color: #fcfcfc;
+  background-image: linear-gradient(to bottom, #fcfcfc 0%, #f1f1f1 100%);
+
+  &:focus {
+    outline: none;
+    border-color: #6db3fd;
+    box-shadow: 3px 3px 0 #6db3fd, -3px -3px 0 #6db3fd, -3px 3px 0 #6db3fd, 3px -3px 0 #6db3fd;
+  }
+}
+.select-container {
+  position: relative;
+
+  &:after {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    content: '\e877';
+    font-family: photon-entypo;
+    transform: translateY(-50%);
   }
 }
